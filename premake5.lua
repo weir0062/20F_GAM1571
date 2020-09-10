@@ -6,3 +6,10 @@ workspace "Game"
 
 project "Game"
     kind "WindowedApp"
+
+    files {
+     "Game/Source/**.cpp",
+     "GenerateProjectFiles.bat",
+     "premake5.lua",
+     ".gitignore"
+	}
