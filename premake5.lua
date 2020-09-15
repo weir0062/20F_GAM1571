@@ -3,13 +3,14 @@ workspace "Game"
     location "build"
 
     platforms { "x64" }
+    characterset "MBCS"
 
 project "Game"
     kind "WindowedApp"
 
     files {
-     "Game/Source/**.cpp",
-     "GenerateProjectFiles.bat",
-     "premake5.lua",
-     ".gitignore"
-	}
+        "Game/Source/**.cpp",
+        "GenerateProjectFiles.bat",
+        "premake5.lua",
+        ".gitignore",
+    }
