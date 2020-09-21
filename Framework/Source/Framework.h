@@ -10,5 +10,8 @@
 
 #include "FWCore.h"
 #include "GameCore.h"
+#include "Utility/ShaderProgram.h"
+#include "Utility/Helpers.h"
+#include "Mesh.h"
 
 #endif //__Framework_H__
