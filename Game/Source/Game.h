@@ -1,18 +1,20 @@
 #pragma once
-class GameObject;
+
+
 class Game : public fw::GameCore
 {
 public:
-    Game();
+    Game(fw::FWCore* pFrawework);
     virtual ~Game();
 
     void Init();
-    virtual void Update() override;
+    virtual void Update(float delta) override;
     virtual void Draw() override;
 
 protected:
     fw::ShaderProgram* m_pShader = nullptr;
-    fw::Mesh* m_pMesh = nullptr;
-    fw::Mesh* m_pMesh2 = nullptr;
-    std::vector<GameObject*> m_pMeshes[2];
+    fw::Mesh* m_pMeshHuman = nullptr;
+    fw::Mesh* m_pMeshAnimal = nullptr;
+    fw::ImGuiManager* m_GUIMANAGER;
+    std::vector<fw::GameObject*> m_Objects;
 };

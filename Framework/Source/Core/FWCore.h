@@ -10,7 +10,7 @@ class FWCore
 {
 protected:
     bool m_EscapeKeyWillQuit;
-
+    
     int m_WindowWidth;
     int m_WindowHeight;
 
