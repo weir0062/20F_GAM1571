@@ -13,31 +13,79 @@ public:
     vec2 operator+(float o) const { return vec2(x + o, y + o); }
     vec2 operator-(float o) const { return vec2(x - o, y - o); }
 
+    vec2 operator*(const vec2& o) const { return vec2(x * o.x, y * o.y); }
+    vec2 operator/(const vec2& o) const { return vec2(x / o.x, y / o.y); }
+    vec2 operator+(const vec2& o) const { return vec2(x + o.x, y + o.y); }
+    vec2 operator-(const vec2& o) const { return vec2(x - o.x, y - o.y); }
+
+    vec2 operator*=(const float o) { return vec2(x *= o, y *= o); }
+    vec2 operator/=(const float o) { return vec2(x /= o, y /= o); }
+    vec2 operator+=(const float o) { return vec2(x += o, y += o); }
+    vec2 operator-=(const float o) { return vec2(x -= o, y -= o); }
+
+
     vec2 operator+=(const vec2& o) { x += o.x; y += o.y; return vec2(x,y); }
 
     vec2 operator-=(const vec2& o) { x -= o.x; y -= o.y; return vec2(x, y); }
+
+
 
     vec2 operator*=(const vec2& o) { x *= o.x; y *= o.y; return vec2(x, y); }
 
     vec2 operator/=(const vec2& o) { x /= o.x; y /= o.y; return vec2(x, y); }
     bool operator==(const vec2& o) {if (x == o.x && y == o.y){return true;}return false;}
     bool operator!=(const vec2& o) {if (x != o.x || y != o.y){return true;}return false;}
-    vec2 magnitude(vec2 vec)
+    void Set(vec2 vec)
     {
-        x *= x;
-        y *= y;
-        vec = vec2(x, y);
-        return vec;
+        x = vec.x;
+        y = vec.y;
+    }
+    void Set(float nx, float ny)
+    {
+        x = nx;
+        y = ny;
+    }
+   
+    float magnitude()
+    {
+       return sqrtf(x*x + y*y);
+    }
+
+    float Distance(vec2 a, vec2 b)
+    {
+        vec2 displacement = a - b;
+        return (displacement.magnitude());
+    }
+
+    void Normalize()
+    {
+
+        vec2 timevec = vec2(x, y);
+        float mag = magnitude();
+        timevec = timevec / mag;
+        x = timevec.x;
+        y = timevec.y;
+       
 
     }
-    vec2 Normalize(vec2 vec)
+    vec2 Normalized()
     {
-        vec2 timevec = vec;
-        vec2 normalize = 1.0f/ vec.magnitude;
-        vec = timevec * normalize;
-        return (vec);
+        vec2 timevec = vec2(x,y);
+        float mag = magnitude();
+        timevec = timevec / mag;
+        return (timevec);
     }
 
+    float Dot(vec2 a, vec2 b)
+    {
+        return(a.x * b.x + a.y * b.y);
+    }
+
+    float Angle(vec2 a, vec2 b)
+    {
+     return acosf(Dot(a, b) / (a.magnitude() * b.magnitude()));
+    }
+    
 public:
     float x;
     float y;
