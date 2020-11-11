@@ -22,6 +22,9 @@ Mesh::~Mesh()
 
 void Mesh::CreateShape(int primitiveType, int numVertices, const float* pVertices)
 {
+    // Delete the old buffer if we had one.
+    glDeleteBuffers( 1, &m_VBO );
+
     // Generate a buffer for our vertex attributes.
     glGenBuffers( 1, &m_VBO ); // m_VBO is a GLuint.
 

@@ -2,94 +2,58 @@
 
 namespace fw {
 
+inline bool fequal(float a, float b, float epsilon = 0.00001f)
+{
+    return( fabsf(a-b) < epsilon );
+}
+
 class vec2
 {
 public:
     vec2() { x = 0; y = 0; }
     vec2(float nx, float ny) { x = nx; y = ny; }
 
+    void Set(float nx, float ny) { x = nx; y = ny; }
+
+    vec2 operator+(float o) const { return vec2( x+o, y+o ); }
+    vec2 operator-(float o) const { return vec2( x-o, y-o ); }
     vec2 operator*(float o) const { return vec2( x*o, y*o ); }
-    vec2 operator/(float o) const { return vec2(x / o, y / o); }
-    vec2 operator+(float o) const { return vec2(x + o, y + o); }
-    vec2 operator-(float o) const { return vec2(x - o, y - o); }
+    vec2 operator/(float o) const { return vec2( x/o, y/o ); }
 
-    vec2 operator*(const vec2& o) const { return vec2(x * o.x, y * o.y); }
-    vec2 operator/(const vec2& o) const { return vec2(x / o.x, y / o.y); }
-    vec2 operator+(const vec2& o) const { return vec2(x + o.x, y + o.y); }
-    vec2 operator-(const vec2& o) const { return vec2(x - o.x, y - o.y); }
+    vec2 operator+(const vec2& o) const { return vec2( x+o.x, y+o.y ); }
+    vec2 operator-(const vec2& o) const { return vec2( x-o.x, y-o.y ); }
+    vec2 operator*(const vec2& o) const { return vec2( x*o.x, y*o.y ); }
+    vec2 operator/(const vec2& o) const { return vec2( x/o.x, y/o.y ); }
 
-    vec2 operator*=(const float o) { return vec2(x *= o, y *= o); }
-    vec2 operator/=(const float o) { return vec2(x /= o, y /= o); }
-    vec2 operator+=(const float o) { return vec2(x += o, y += o); }
-    vec2 operator-=(const float o) { return vec2(x -= o, y -= o); }
+    vec2& operator+=(float o) { x += o; y += o; return *this; }
+    vec2& operator-=(float o) { x -= o; y -= o; return *this; }
+    vec2& operator*=(float o) { x *= o; y *= o; return *this; }
+    vec2& operator/=(float o) { x /= o; y /= o; return *this; }
 
+    vec2& operator+=(const vec2& o) { x += o.x; y += o.y; return *this; }
+    vec2& operator-=(const vec2& o) { x -= o.x; y -= o.y; return *this; }
+    vec2& operator*=(const vec2& o) { x *= o.x; y *= o.y; return *this; }
+    vec2& operator/=(const vec2& o) { x /= o.x; y /= o.y; return *this; }
 
-    vec2 operator+=(const vec2& o) { x += o.x; y += o.y; return vec2(x,y); }
+    bool operator==(const vec2& o) const { return( fequal( x, o.x ) && fequal( y, o.y ) ); }
+    bool operator!=(const vec2& o) const { return( !fequal( x, o.x ) || !fequal( y, o.y ) ); }
 
-    vec2 operator-=(const vec2& o) { x -= o.x; y -= o.y; return vec2(x, y); }
+    vec2 operator-() const { return vec2( -x, -y ); }
 
+    float GetLength() const { return sqrtf( x*x + y*y ); }
+    float DistanceFrom(const vec2& o) const { return (*this - o).GetLength(); }
 
+    void Normalize() { float mag = GetLength(); x /= mag; y /= mag; }
+    vec2 GetNormalized() const { float mag = GetLength(); return vec2( x/mag, y/mag ); }
 
-    vec2 operator*=(const vec2& o) { x *= o.x; y *= o.y; return vec2(x, y); }
+    float Dot(const vec2& o) const { return (x*o.x + y*o.y); }
 
-    vec2 operator/=(const vec2& o) { x /= o.x; y /= o.y; return vec2(x, y); }
-    bool operator==(const vec2& o) {if (x == o.x && y == o.y){return true;}return false;}
-    bool operator!=(const vec2& o) {if (x != o.x || y != o.y){return true;}return false;}
-    void Set(vec2 vec)
-    {
-        x = vec.x;
-        y = vec.y;
-    }
-    void Set(float nx, float ny)
-    {
-        x = nx;
-        y = ny;
-    }
-   
-    float magnitude()
-    {
-       return sqrtf(x*x + y*y);
-    }
-
-    float Distance(vec2 a, vec2 b)
-    {
-        vec2 displacement = a - b;
-        return (displacement.magnitude());
-    }
-
-    void Normalize()
-    {
-
-        vec2 timevec = vec2(x, y);
-        float mag = magnitude();
-        timevec = timevec / mag;
-        x = timevec.x;
-        y = timevec.y;
-       
-
-    }
-    vec2 Normalized()
-    {
-        vec2 timevec = vec2(x,y);
-        float mag = magnitude();
-        timevec = timevec / mag;
-        return (timevec);
-    }
-
-    float Dot(vec2 a, vec2 b)
-    {
-        return(a.x * b.x + a.y * b.y);
-    }
-
-    float Angle(vec2 a, vec2 b)
-    {
-     return acosf(Dot(a, b) / (a.magnitude() * b.magnitude()));
-    }
-    
 public:
     float x;
     float y;
 };
+
+inline vec2 operator*(float scalar, const vec2& vector) { return vec2( scalar*vector.x, scalar*vector.y ); }
 
 class vec4
 {

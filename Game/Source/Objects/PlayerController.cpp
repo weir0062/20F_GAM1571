@@ -10,6 +10,11 @@ PlayerController::~PlayerController()
 {
 }
 
+void PlayerController::StartFrame()
+{
+    m_OldFlags = m_Flags;
+}
+
 void PlayerController::OnEvent(fw::Event* pEvent)
 {
     if( pEvent->GetType() == fw::InputEvent::GetStaticEventType() )
@@ -20,19 +25,38 @@ void PlayerController::OnEvent(fw::Event* pEvent)
         {
             if( pInputEvent->GetDeviceState() == fw::InputEvent::DeviceState::Pressed )
             {
-                if( pInputEvent->GetKeyCode() == 'W' ) { m_Flags |= Up; }
-                if( pInputEvent->GetKeyCode() == 'S' ) { m_Flags |= Down; }
-                if( pInputEvent->GetKeyCode() == 'A' ) { m_Flags |= Left; }
-                if( pInputEvent->GetKeyCode() == 'D' ) { m_Flags |= Right; }
+                if( pInputEvent->GetKeyCode() == 'W' ) { m_Flags |= Mask::Up; }
+                if( pInputEvent->GetKeyCode() == 'S' ) { m_Flags |= Mask::Down; }
+                if( pInputEvent->GetKeyCode() == 'A' ) { m_Flags |= Mask::Left; }
+                if( pInputEvent->GetKeyCode() == 'D' ) { m_Flags |= Mask::Right; }
+                if (pInputEvent->GetKeyCode() == 'X') { m_Flags |= Mask::Faster; }
+                if (pInputEvent->GetKeyCode() == 'R') { m_Flags |= Mask::Restart; }
             }
 
             if( pInputEvent->GetDeviceState() == fw::InputEvent::DeviceState::Released )
             {
-                if( pInputEvent->GetKeyCode() == 'W' ) { m_Flags &= ~Up; }
-                if( pInputEvent->GetKeyCode() == 'S' ) { m_Flags &= ~Down; }
-                if( pInputEvent->GetKeyCode() == 'A' ) { m_Flags &= ~Left; }
-                if( pInputEvent->GetKeyCode() == 'D' ) { m_Flags &= ~Right; }
+                if( pInputEvent->GetKeyCode() == 'W' ) { m_Flags &= ~Mask::Up;}
+                if( pInputEvent->GetKeyCode() == 'S' ) { m_Flags &= ~Mask::Down;}
+                if( pInputEvent->GetKeyCode() == 'A' ) { m_Flags &= ~Mask::Left;}
+                if( pInputEvent->GetKeyCode() == 'D' ) { m_Flags &= ~Mask::Right;}
+                if (pInputEvent->GetKeyCode() == 'X') { m_Flags &= ~Mask::Faster; }
+                if (pInputEvent->GetKeyCode() == 'R') { m_Flags &= ~Mask::Restart; }
             }
         }
     }
+}
+
+bool PlayerController::IsHeld(Mask mask)
+{
+    return (m_Flags & mask) != 0;
+}
+
+bool PlayerController::WasNewlyPressed(Mask mask)
+{
+    return ((m_Flags & mask) != 0) && ((m_OldFlags & mask) == 0);
+}
+
+bool PlayerController::WasNewlyReleased(Mask mask)
+{
+    return ((m_Flags & mask) == 0) && ((m_OldFlags & mask) != 0);
 }

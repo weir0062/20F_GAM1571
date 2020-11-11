@@ -1,4 +1,5 @@
 #pragma once
+#include "Collision/Collision.h"
 
 class PlayerController;
 
@@ -9,7 +10,18 @@ public:
     virtual ~Player();
 
     virtual void Update(float deltaTime) override;
+    float GetCurrentSpeed();
+    bool GetIsDashing()
+    {
+        return IsDashing;
+    }
 
 protected:
     PlayerController* m_pPlayerController = nullptr;
+    Collision collision;
+    float m_speed;
+    float m_timer = 0;
+    bool CanDash = true;
+    bool IsDashing = false;
+    bool Doonce = true;
 };
