@@ -1,7 +1,9 @@
 #pragma once
-
+#include <random>
 class PlayerController;
 class Player;
+
+
 
 class Game : public fw::GameCore
 {
@@ -15,6 +17,8 @@ public:
         Won,
     };
 
+    int RandomInt(int min, int max);
+   
     void Init();
     virtual void StartFrame(float deltaTime) override;
     virtual void OnEvent(fw::Event* pEvent) override;
@@ -48,5 +52,6 @@ protected:
     Gamestate gamestate;
     // Settings.
     bool m_VSyncEnabled = true;
-   
+    float m_timer = 5;
+    bool Doneonce = false;
 };

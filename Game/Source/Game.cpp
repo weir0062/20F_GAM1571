@@ -6,10 +6,20 @@
 #include "Objects/Shapes.h"
 #include "Events/GameEvents.h"
 #include "Collision/Collision.h"
+#include <time.h>
+
+
+
+//Global variables - used for random number generation
+std::random_device seed;
+std::mt19937 mersenneTwister(seed());
+
 
 Game::Game(fw::FWCore* pFramework) : fw::GameCore( pFramework )
 {
     wglSwapInterval( m_VSyncEnabled ? 1 : 0 );
+    gamestate = Playing;
+    srand(time(NULL));
 }
 
 Game::~Game()
@@ -28,6 +38,14 @@ Game::~Game()
 
     delete m_pEventManager;
     delete m_pImGuiManager;
+}
+
+int Game::RandomInt(int min, int max)
+{
+     
+        std::uniform_int_distribution<int> distribution(min, max);
+        return distribution(mersenneTwister);
+    
 }
 
 void Game::Init()
@@ -97,7 +115,7 @@ void Game::OnEvent(fw::Event* pEvent)
             gamestate = Lost;
 
         }
-        if (m_pPlayer->GetIsDashing() == true)
+        if (m_pPlayer->Dashing)
         {
             if (m_pPlayer->GetCurrentSpeed() == 3)
             {
@@ -194,12 +212,18 @@ void Game::Update(float deltaTime)
 
     }
     
+    if (gamestate == Won)
+    {
+        ImGui::Text("WON!!!");
+    }
+    if (gamestate != Lost)
+    {
         if (m_Objects.size() == 1)
         {
             gamestate = Won;
-            ImGui::Text("WON!!!");
+
         }
-        
+    }
         if (gamestate == Lost)
         {
             ImGui::Text("Lost!!!");
@@ -212,10 +236,58 @@ void Game::Update(float deltaTime)
                 RemoveFromGameEvent* DeleteEvent;
                 DeleteEvent = new RemoveFromGameEvent(m_Objects[i]);
                 GetEventManager()->AddEvent(DeleteEvent);
-
+                gamestate = Lost;
             }
         }
+        m_timer -= deltaTime;
+        if (m_timer <= 0)
+        {
+            m_timer = RandomInt(1, m_Objects.size());
+        }
 
+        int temp1 = RandomInt(0, 1);
+        int temp2 = RandomInt(0, 1);
+        float RandX = temp1;
+        float RandY = temp2;
+     
+        RandX = (RandX * 2 - 1)/25 ;
+        RandY = (RandY * 2 - 1)/25 ;
+        vec2 Dir = vec2(RandX, RandY);
+
+        for (int i = 0; i < m_Objects.size(); i++)
+        {
+            if (m_Objects[i] == m_pPlayer)
+            {
+                continue;
+            }
+            
+          
+           
+                m_Objects[i]->SetPosition(m_Objects[i]->GetPosition() += Dir);
+               
+            
+
+            {
+               
+                if (m_Objects[i]->GetPosition().x > 9)
+                {
+                    m_Objects[i]->SetPositionX(9);
+                }
+                if (m_Objects[i]->GetPosition().x < 1)
+                {
+                    m_Objects[i]->SetPositionX(1);
+                }
+                if (m_Objects[i]->GetPosition().y > 9)
+                {
+                    m_Objects[i]->SetPositionY(9);
+                }
+                if (m_Objects[i]->GetPosition().y < 1)
+                {
+                    m_Objects[i]->SetPositionY(1);
+                }
+            }
+
+        }
 
     // Debug imgui stuff.
     {
@@ -244,7 +316,8 @@ void Game::Draw()
 
 void Game::Reset()
 {
-
+    m_pPlayer->CanDash;
+    m_pPlayer->SetTimer(0);
 
     gamestate = Playing;
    

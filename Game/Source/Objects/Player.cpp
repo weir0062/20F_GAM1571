@@ -8,6 +8,8 @@ Player::Player(fw::GameCore* pGameCore, PlayerController* pPlayerController, std
     : fw::GameObject( pGameCore, name, pos, pMesh, pShader, color )
     , m_pPlayerController( pPlayerController )
 {
+    playerstate = CanDash;
+    timerstate = HasToDo;
 }
 
 Player::~Player()
@@ -18,6 +20,10 @@ void Player::Update(float deltaTime)
 {
     float speed = 1.0f;
     m_timer -= deltaTime;
+    if (m_timer <= 0.0001)
+    {
+        m_timer = 0;
+    }
     vec2 dir;
     Game* littlegame = static_cast<Game*>(m_pGameCore);
     if (littlegame->GetGamestate() == littlegame->Playing)
@@ -40,52 +46,55 @@ void Player::Update(float deltaTime)
         }
         if (m_pPlayerController->IsHeld(PlayerController::Mask::Faster))
         {
-            if ( CanDash == true )
+            if (playerstate != Cooldown)
             {
                 dir.x *= 3;
                 dir.y *= 3;
                 m_speed = speed *= 3;
-                IsDashing = true;
-               
-                
+                playerstate = Dashing;
             }
+               
         }
         else
         {
             m_speed = speed;
         }
-        
-        
-        if (IsDashing == true)
+        if (playerstate == Dashing)
         {
-            if (Doonce == true)
+            if (timerstate == HasToDo)
             {
-                m_timer = 0.2;
-                Doonce = false;
+                m_timer = 0.5;
+                timerstate = Done;
             }
-            if (m_timer <= 0.0001)
+
+
+            if (m_timer <= 0.0003)
             {
-                CanDash = false;
-                IsDashing = false;
-               
-                
-           }
-        }
-        if (IsDashing == false && CanDash == false)
-        {
-            m_timer = 5.0f;
-            if (m_timer <= 0.00001)
-            {
-                CanDash = true;
+                playerstate = Cooldown;
+                timerstate = HasToDo;
             }
         }
-       
-            if (m_timer <= 0)
+
+        if (playerstate == Cooldown)
+        {
+            if (timerstate == HasToDo)
             {
-                m_timer = 0;
+                m_timer = 3;
+                timerstate = Done;
             }
-        
-        ImGui::Text("%0.2f", m_timer);
+            if (m_timer <= 0.0003)
+            {
+                playerstate = CanDash;
+                timerstate = HasToDo;
+
+            }
+        }
+        if (playerstate == CanDash)
+        {
+            m_timer = 0;
+        }
+      
+        ImGui::Text("Cooldown: %0.1f", m_timer);
         
     }
     if (littlegame->GetGamestate() == littlegame->Lost || littlegame->GetGamestate() == littlegame->Won)

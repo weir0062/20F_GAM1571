@@ -22,6 +22,14 @@ public:
     {
         m_Position = Position;
     }
+    void SetPositionX(float PositionX)
+    {
+        m_Position.x = PositionX;
+    }
+    void SetPositionY(float PositionY)
+    {
+        m_Position.y = PositionY;
+    }
     vec2 GetPosition() { return m_Position; }
     void Deleteme(bool m_delete)
     {

@@ -15,13 +15,29 @@ public:
     {
         return IsDashing;
     }
+    enum PlayerState
+    {
+        CanDash,
+        Dashing,
+        Cooldown,
+    };
+    enum TimerState
+    {
+        HasToDo,
+        Done,
+    };
+
+    void SetTimer(float m_time)
+    {
+        m_timer = m_time;
+    }
 
 protected:
     PlayerController* m_pPlayerController = nullptr;
     Collision collision;
     float m_speed;
     float m_timer = 0;
-    bool CanDash = true;
     bool IsDashing = false;
-    bool Doonce = true;
+    PlayerState playerstate;
+    TimerState timerstate;
 };
