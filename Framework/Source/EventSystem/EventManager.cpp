@@ -19,24 +19,43 @@ EventManager::~EventManager()
     }
 }
 
-void EventManager::AddEvent(Event* pEvent)
+void EventManager::AddEvent(Event* pEvent, float delayBeforeSending)
 {
+    pEvent->SetDelay( delayBeforeSending );
     m_EventQueue.push( pEvent );
 }
 
-void EventManager::DispatchAllEvents(GameCore* pGameCore)
+void EventManager::DispatchAllEvents(float deltaTime, GameCore* pGameCore)
 {
+    std::queue<Event*> m_NotSentEventQueue;
+
     while( m_EventQueue.empty() == false )
     {
         // Remove it from the queue.
         Event* pEvent = m_EventQueue.front();
         m_EventQueue.pop();
 
-        // Send it to the game.
-        pGameCore->OnEvent( pEvent );
+        pEvent->m_Delay -= deltaTime;
+        if( pEvent->m_Delay <= 0 )
+        {
+            // Send it to the game.
+            pGameCore->OnEvent( pEvent );
 
-        // Delete the event.
-        delete pEvent;
+            // Delete the event.
+            delete pEvent;
+        }
+        else
+        {
+            // Temporarily put the event into another queue.
+            m_NotSentEventQueue.push( pEvent );
+        }
+    }
+
+    // Push all untriggered events back into the event queue.
+    while( m_NotSentEventQueue.empty() == false )
+    {
+        m_EventQueue.push( m_NotSentEventQueue.front() );
+        m_NotSentEventQueue.pop();
     }
 }
 

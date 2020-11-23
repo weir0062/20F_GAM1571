@@ -3,21 +3,50 @@ workspace "Game"
 	platforms		{ "x64" }
 	location		"build"
 	characterset	"MBCS"
-	startproject	"Game"
+	startproject	"GameTilemap"
 
 	filter "configurations:Debug"
 		symbols		"on"
 
-project "Game"
+--project "Game"
+--	kind		"WindowedApp"
+--	location	"build/Game"
+--	debugdir	"Game"
+--
+--	files {
+--		"Game/Source/**.cpp",
+--		"Game/Source/**.h",
+--		"Game/Data/**.vert",
+--		"Game/Data/**.frag",
+--		"premake5.lua",
+--		".gitignore",
+--		"GenerateProjectFiles.bat",
+--		"readme.txt",
+--	}
+--
+--	includedirs {
+--		"Game/Source",
+--	}
+--
+--	links {
+--		"Framework",
+--		"opengl32",
+--	}
+--
+--	pchheader "GamePCH.h"
+--	pchsource "Game/Source/WinMain.cpp"
+
+project "GameTilemap"
 	kind		"WindowedApp"
-	location	"build/Game"
-	debugdir	"Game"
+	location	"build/GameTilemap"
+	debugdir	"GameTilemap"
 
 	files {
-		"Game/Source/**.cpp",
-		"Game/Source/**.h",
-		"Game/Data/**.vert",
-		"Game/Data/**.frag",
+		"GameTilemap/Source/**.cpp",
+		"GameTilemap/Source/**.h",
+		"GameTilemap/Data/**.vert",
+		"GameTilemap/Data/**.frag",
+		"GameTilemap/Data/**.json",
 		"premake5.lua",
 		".gitignore",
 		"GenerateProjectFiles.bat",
@@ -25,7 +54,7 @@ project "Game"
 	}
 
 	includedirs {
-		"Game/Source",
+		"GameTilemap/Source",
 	}
 
 	links {
@@ -34,7 +63,7 @@ project "Game"
 	}
 
 	pchheader "GamePCH.h"
-	pchsource "Game/Source/WinMain.cpp"
+	pchsource "GameTilemap/Source/WinMain.cpp"
 
 project "Framework"
 	kind		"StaticLib"
@@ -45,6 +74,7 @@ project "Framework"
 		"Framework/Source/**.h",
 		"Framework/Libraries/imgui/*.cpp",
 		"Framework/Libraries/imgui/*.h",
+		"Framework/Libraries/stb/*.h",
 	}
 
 	includedirs {

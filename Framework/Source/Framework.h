@@ -15,6 +15,7 @@
 #include "Math/Vector.h"
 #include "Objects/GameObject.h"
 #include "Objects/Mesh.h"
+#include "Objects/Texture.h"
 #include "UI/ImGuiManager.h"
 #include "Utility/Helpers.h"
 #include "Utility/ShaderProgram.h"

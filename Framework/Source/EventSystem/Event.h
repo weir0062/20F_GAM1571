@@ -1,10 +1,11 @@
 #pragma once
-#include "Math/Vector.h"
-#include "Objects/GameObject.h"
+
 namespace fw {
 
 class Event
 {
+    friend class EventManager;
+
 public:
     Event();
     virtual ~Event();
@@ -12,6 +13,9 @@ public:
     virtual const char* GetType() = 0;
 
 protected:
+    void SetDelay(float delay) { m_Delay = delay; }
+
+    float m_Delay = 0.0f;
 };
 
 class InputEvent : public Event
@@ -47,39 +51,6 @@ protected:
     DeviceType m_DeviceType;
     DeviceState m_DeviceState;
     unsigned int m_KeyCode;
-};
-
-
-class CollisionEvent : public Event
-{
-public:
-
-    CollisionEvent( GameObject* firstobject, GameObject* secondobject)
-    {
-        m_firstobject = firstobject;
-        m_secondobject = secondobject;
-
-    }
-    virtual ~CollisionEvent(){}
-    static const char* GetStaticEventType() { return "CollisionEvent"; }
-    virtual const char* GetType() override { return GetStaticEventType(); }
-    GameObject* GetfirstObject()
-    {
-
-        return m_firstobject;
-    }
-    GameObject* GetsecondObject()
-    {
-
-        return m_secondobject;
-    }
-
-    
-protected:
-
-    GameObject* m_firstobject;
-    GameObject* m_secondobject;
-
 };
 
 } // namespace fw
