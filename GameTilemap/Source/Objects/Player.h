@@ -9,7 +9,8 @@ public:
     virtual ~Player();
 
     virtual void Update(float deltaTime) override;
-
+    float m_timer = TIMER;
+    const float TIMER = 0.5;
 protected:
     PlayerController* m_pPlayerController = nullptr;
 };
