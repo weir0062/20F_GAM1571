@@ -19,75 +19,27 @@ void Player::Update(float deltaTime)
     float speed = 2.0f;
 
     vec2 dir;
-    m_timer -= deltaTime;
-    if (m_timer <= 0)
-    {
-        m_timer = TIMER;
-    }
-    m_UVScale = vec2(64.0 / 1024.0, 64.0 / 512.0);
-    m_UVOffset = vec2(780.0 / 1024.0, 318 / 512.0);
 
     if( m_pPlayerController->IsHeld( PlayerController::Mask::Up ) )
     {
         dir.y += 1;
-        if (m_timer < TIMER / 2)
-        {
-            m_UVScale = vec2(64.0 / 1024.0, 64.0 / 512.0);
-            m_UVOffset = vec2(910 / 1024.0, 448 / 512.0);
-        }
-        else
-        {
-            m_UVScale = vec2(64.0 / 1024.0, 64.0 / 512.0);
-            m_UVOffset = vec2(845 / 1024.0, 383.0 / 512.0);
-        }
-
-
     }
     if( m_pPlayerController->IsHeld( PlayerController::Mask::Down ) )
     {
         dir.y += -1;
-        if (m_timer < TIMER/2)
-        {
-            m_UVScale = vec2(64.0 / 1024.0, 64.0 / 512.0);
-            m_UVOffset = vec2(780.0 / 1024.0, 318 / 512.0);
-        }
-        else
-        {
-            m_UVScale = vec2(64.0 / 1024.0, 64.0 / 512.0);
-            m_UVOffset = vec2(715.0 / 1024.0, 253.0 / 512.0);
-        }
     }
     if( m_pPlayerController->IsHeld( PlayerController::Mask::Left ) )
     {
         dir.x += -1;
-        if (m_timer < TIMER / 2)
-        {
-            m_UVScale = vec2(64.0 / 1024.0, 64.0 / 512.0);
-            m_UVOffset = vec2(910 / 1024.0, 318 / 512.0);
-
-        }
-        else
-        {
-            m_UVScale = vec2(64.0 / 1024.0, 64.0 / 512.0);
-            m_UVOffset = vec2(780 / 1024.0, 123 / 512.0);
-        }
     }
     if( m_pPlayerController->IsHeld( PlayerController::Mask::Right ) )
     {
         dir.x += 1;
-        if (m_timer < TIMER / 2)
-        {
-            m_UVScale = vec2(64.0 / 1024.0, 64.0 / 512.0);
-            m_UVOffset = vec2(780 / 1024.0, 188 / 512.0);
-        }
-        else
-        {
-            m_UVScale = vec2(64.0 / 1024.0, 64.0 / 512.0);
-            m_UVOffset = vec2(715 / 1024.0, 123 / 512.0);
-        }
     }
 
-  
+    m_UVScale = vec2( 64.0/1024.0, 64.0/512.0 );
+    m_UVOffset = vec2( 780.0/1024.0, 383.0/512.0 );
+
     //dir.Normalize();
 
     m_Position += dir * speed * deltaTime;
